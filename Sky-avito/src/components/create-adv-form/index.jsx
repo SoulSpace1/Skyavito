@@ -13,8 +13,6 @@ import { useNavigate } from "react-router-dom";
 function CreateAdvForm({ closeForm }) {
   const dispatch = useDispatch();
 
-  const history = useNavigate();
-
   const [files, setFiles] = useState([]);
   const [price, setPrice] = useState(0);
   const [title, setTitle] = useState("");
@@ -41,14 +39,11 @@ function CreateAdvForm({ closeForm }) {
     const ads = await Promise.all(
       files.map(async (file) => await uploadImage({ file, adId: json.id }))
     );
-    dispatch(createAd(files.length === 0 ? json : ads[0]));
 
-    const adId = ads.id;
-    history.push(`/ads/${adId}`);
+    dispatch(createAd(files.length === 0 ? json : ads[0]));
   };
 
   
-
   return (
     <S.FormWrapper>
       <S.TitleWrapper>

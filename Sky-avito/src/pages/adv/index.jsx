@@ -8,6 +8,7 @@ import { Overlay, StyledContainer } from "../../global-styles";
 import { API_URL, HOME_ROUTE, PROFILE_ROUTE } from "../../utils/consts";
 import { get, remove } from "../../utils/fetch";
 import * as S from "./styles";
+import CreateAdvForm from "../../components/create-adv-form";
 
 function AdvPage() {
   const isUserAdv = true;
@@ -19,6 +20,7 @@ function AdvPage() {
   const [activeImg, setActiveImg] = useState(0);
   const [visibleReviews, setVisibleReviews] = useState(false);
   const [visibleEditAdvForm, setVisibleEditAdvForm] = useState(false);
+  const [visibleCreateAdv, setVisibleCreateAdv] = useState(false);
 
   useEffect(() => {
     getAdv();
@@ -28,6 +30,8 @@ function AdvPage() {
   const getAdv = async () => {
     const { json } = await get(`/ads/${params.id}`);
     setAdv(json);
+    const adId = json.id;
+    navigate(`/ads/${adId}`);
   };
 
   const getAdComments = async () => {
@@ -123,9 +127,17 @@ function AdvPage() {
           <EditAdvForm
             adv={adv}
             setAdv={setAdv}
-            closeForm={() => setVisibleEditAdvForm (false)}
+            closeForm={() => setVisibleEditAdvForm(false)}
           />
-          <Overlay />
+        </>
+      )}
+      {visibleCreateAdv && (
+        <>
+          <CreateAdvForm
+            adv={adv}
+            setAdv={setAdv}
+            closeForm={() => setVisibleCreateAdv(false)}
+          />
         </>
       )}
     </S.Main>
